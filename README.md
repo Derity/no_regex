@@ -212,7 +212,7 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/yourusername/no_regex.
+Bug reports and pull requests are welcome on GitHub at https://github.com/Derity/no_regex
 
 ## License
 

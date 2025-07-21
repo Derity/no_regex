@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Write Ruby without regex"
   spec.description   = "Replace complex regex patterns with simple, readable methods for string validation and manipulation"
-  spec.homepage      = "https://github.com/yourusername/no_regex"
+  spec.homepage      = "https://github.com/Derity/no_regex"
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.6.0"
 
