@@ -3,8 +3,9 @@
 module NoRegex
   module PatternMethods
     # Define methods that return regex patterns
+    #
     def is_number?
-      # Examples: "12345", "0", "999"
+      # Examples: "123", "-456", "12.34", "-0.5", "0", "999.99"
       /\A-?\d+(\.\d+)?\z/
     end
 
