@@ -1,6 +1,34 @@
-﻿# NoRegex
+# NoRegex
 
 Write Ruby without regex! A gem that provides simple, readable methods to replace complex regular expressions for string validation and manipulation.
+
+## Transform Your Code
+
+**BEFORE** - From complex regex patterns:
+```ruby
+validates :email, format: { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i }
+validates :phone, format: { with: /\A\+?[\d\s\-\(\)]+\z/ }
+
+if params[:search].match?(/\A\d+\z/)
+# It's a number
+end
+
+user_input.gsub(/[`a-zA-Z0-9]/, '')
+```
+
+**AFTER** - To simple, readable methods!
+```ruby
+validates :email, format: { with: is_email? }
+validates :phone, format: { with: is_phone_number? }
+
+if params[:search].is_number?
+# It's a number
+end
+
+user_input.remove_special_chars
+```
+
+No more googling regex patterns or debugging cryptic expressions!
 
 ## Installation
 
