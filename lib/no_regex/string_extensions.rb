@@ -4,7 +4,7 @@
 class String
   # Check methods - return true/false
   def is_number?
-    match?(/\A\d+\z/)
+    match?(/\A-?\d+(\.\d+)?\z/)
   end
 
   def is_letters?

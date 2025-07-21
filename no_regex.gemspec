@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+require_relative "lib/no_regex/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "no_regex"
-  spec.version       = "0.1.0"
+  spec.version       = NoRegex::VERSION
   spec.authors       = ["David Wright"]
   spec.email         = ["derity@derity.com"]
 

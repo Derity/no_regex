@@ -2,6 +2,34 @@
 
 Write Ruby without regex! A gem that provides simple, readable methods to replace complex regular expressions for string validation and manipulation.
 
+## Transform Your Code
+
+**BEFORE** - From complex regex patterns:
+```ruby
+validates :email, format: { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i }
+validates :phone, format: { with: /\A\+?[\d\s\-\(\)]+\z/ }
+
+if params[:search].match?(/\A\d+\z/)
+# It's a number
+end
+
+user_input.gsub(/[`a-zA-Z0-9]/, '')
+```
+
+**AFTER** - To simple, readable methods!
+```ruby
+validates :email, format: { with: is_email? }
+validates :phone, format: { with: is_phone_number? }
+
+if params[:search].is_number?
+# It's a number
+end
+
+user_input.remove_special_chars
+```
+
+No more googling regex patterns or debugging cryptic expressions!
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -21,6 +49,32 @@ Or install it yourself as:
 ```bash
 $ gem install no_regex
 ```
+
+## Rails Integration
+
+To use the `format: { with: is_number? }` syntax in your Rails models or form objects, you need to extend your class with `NoRegex::PatternMethods`:
+
+```ruby
+class User < ApplicationRecord
+extend NoRegex::PatternMethods
+
+validates :email, format: { with: is_email? }
+validates :phone, format: { with: is_phone_number? }
+end
+```
+
+For form objects:
+```ruby
+class MyFormObject
+include ActiveModel::Model
+extend NoRegex::PatternMethods
+
+validates :search_term, format: { with: is_number? }
+end
+```
+
+This makes all the pattern methods available to your validations. Once extended, you can use any of the validation methods in the Format Validations section.
+
 
 ## Usage
 
@@ -55,74 +109,12 @@ require 'no_regex'
 3.14.to_percentage                    # => "314.0%"
 ```
 
-## Rails Integration
-
-### Using Format Validations in Rails
-
-To use the `format: { with: is_number? }` syntax in your Rails models or form objects, you need to extend your class with `NoRegex::PatternMethods`:
-
-```ruby
-class User < ApplicationRecord
-extend NoRegex::PatternMethods
-
-validates :email, format: { with: is_email? }
-validates :phone, format: { with: is_phone_number? }
-end
-```
-
-For form objects:
-```ruby
-class MyFormObject
-include ActiveModel::Model
-extend NoRegex::PatternMethods
-
-validates :search_term, format: { with: is_number? }
-end
-```
-
-This makes all the pattern methods available to your validations. Once extended, you can use any of the validation methods shown below.
-
-### All Available Format Validators
-
-```ruby
-validates :field, format: { with: is_number? }          # Only digits
-validates :field, format: { with: is_letters? }         # Only letters
-validates :field, format: { with: is_alphanumeric? }    # Letters and numbers
-validates :field, format: { with: is_email? }           # Email format
-validates :field, format: { with: is_phone_number? }    # Phone format
-validates :field, format: { with: is_url? }             # URL format
-validates :field, format: { with: is_zip_code? }        # ZIP code
-validates :field, format: { with: is_hex_color? }       # Hex colors
-validates :field, format: { with: is_username? }        # Usernames
-validates :field, format: { with: is_decimal? }         # Decimals
-validates :field, format: { with: is_integer? }         # Integers
-validates :field, format: { with: is_positive_number? } # Positive numbers
-validates :field, format: { with: is_uuid? }            # UUIDs
-validates :field, format: { with: is_credit_card? }     # Credit cards
-validates :field, format: { with: is_ssn? }             # SSN format
-validates :field, format: { with: is_ipv4? }            # IP addresses
-validates :field, format: { with: is_time_24h? }        # 24-hour time
-validates :field, format: { with: is_date_yyyy_mm_dd? } # YYYY-MM-DD dates
-```
-
-### Custom Validators (Alternative Approach)
-
-```ruby
-class User < ApplicationRecord
-validates :phone, number: true
-validates :name, letters: { message: "can only contain letters" }
-validates :username, alphanumeric: true
-validates :email, email_format: true
-validates :website, url_format: { allow_blank: true }
-end
-```
-
-## Available Methods
-
 ### Validation Methods
 
-- `is_number?` - Check if string contains only numbers
+- `is_number?` - Check if string contains a number
 - `is_letters?` - Check if string contains only letters
+- `is_integer?` - Check if string is an integer
+- `is_decimal?` - Check if string is a decimal number
 - `is_alphanumeric?` - Check if string contains only letters and numbers
 - `is_email?` - Check if string is a valid email format
 - `is_blank?` - Check if string is nil or contains only whitespace
@@ -131,8 +123,6 @@ end
 - `is_zip_code?` - Check if string is a valid ZIP code
 - `is_hex_color?` - Check if string is a valid hex color
 - `is_username?` - Check if string is a valid username (letters, numbers, _, -)
-- `is_decimal?` - Check if string is a decimal number
-- `is_integer?` - Check if string is an integer
 - `is_positive_number?` - Check if string is a positive number
 - `is_uuid?` - Check if string is a valid UUID
 - `is_credit_card?` - Check if string is a valid credit card number
@@ -165,6 +155,42 @@ end
 
 - `word_count` - Count words in string
 - `truncate(length, ellipsis)` - Truncate string to specified length with ellipsis
+
+
+### Format Validators
+
+```ruby
+validates :field, format: { with: is_number? }          # Only digits
+validates :field, format: { with: is_letters? }         # Only letters
+validates :field, format: { with: is_integer? }         # Integers
+validates :field, format: { with: is_decimal? }         # Decimals
+validates :field, format: { with: is_alphanumeric? }    # Letters and numbers
+validates :field, format: { with: is_email? }           # Email format
+validates :field, format: { with: is_phone_number? }    # Phone format
+validates :field, format: { with: is_url? }             # URL format
+validates :field, format: { with: is_zip_code? }        # ZIP code
+validates :field, format: { with: is_hex_color? }       # Hex colors
+validates :field, format: { with: is_username? }        # Usernames
+validates :field, format: { with: is_positive_number? } # Positive numbers
+validates :field, format: { with: is_uuid? }            # UUIDs
+validates :field, format: { with: is_credit_card? }     # Credit cards
+validates :field, format: { with: is_ssn? }             # SSN format
+validates :field, format: { with: is_ipv4? }            # IP addresses
+validates :field, format: { with: is_time_24h? }        # 24-hour time
+validates :field, format: { with: is_date_yyyy_mm_dd? } # YYYY-MM-DD dates
+```
+
+### Custom Validators (Alternative Approach)
+
+```ruby
+class User < ApplicationRecord
+validates :phone, number: true
+validates :name, letters: { message: "can only contain letters" }
+validates :username, alphanumeric: true
+validates :email, email_format: true
+validates :website, url_format: { allow_blank: true }
+end
+```
 
 ## Examples
 

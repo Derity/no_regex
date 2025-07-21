@@ -5,7 +5,7 @@ module NoRegex
     # Define methods that return regex patterns
     def is_number?
       # Examples: "12345", "0", "999"
-      /\A\d+\z/
+      /\A-?\d+(\.\d+)?\z/
     end
 
     def is_letters?
