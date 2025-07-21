@@ -1,4 +1,4 @@
-﻿# NoRegex
+# NoRegex
 
 Write Ruby without regex! A gem that provides simple, readable methods to replace complex regular expressions for string validation and manipulation.
 
